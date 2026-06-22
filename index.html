@@ -36,16 +36,17 @@
 
     /* Header */
     .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      text-align: center;
       margin-bottom: 16px;
     }
-    .logo { font-family: 'Fraunces', serif; font-size: 20px; color: var(--gold); letter-spacing: 0.04em; }
+    .logo { font-family: 'Fraunces', serif; font-size: 28px; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; }
+    .logo-ornament { color: var(--gold); margin: 0 6px; font-size: 18px; }
+    .logo-sub { font-size: 11px; color: var(--text-dim); letter-spacing: 0.22em; text-transform: uppercase; margin-top: 3px; }
     .rate-pill {
-      display: flex; align-items: center; gap: 8px;
+      display: inline-flex; align-items: center; gap: 8px;
       background: var(--surface); border: 0.5px solid var(--border2);
-      border-radius: 100px; padding: 6px 12px; font-size: 12px; color: var(--text-muted);
+      border-radius: 100px; padding: 5px 12px; font-size: 12px; color: var(--text-muted);
+      margin-top: 8px;
     }
     .rate-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
     .rate-dot.loading { background: #888; animation: pulse 1.2s infinite; }
@@ -161,10 +162,13 @@
 <div class="container">
 
   <div class="header">
-    <div class="logo">Jos Alukkas Calculator</div>
-    <div class="rate-pill">
-      <div class="rate-dot loading" id="dot"></div>
-      <span id="rate-status">Fetching rates...</span>
+    <div class="logo">Jos<span class="logo-ornament">&#10033;</span>Alukkas</div>
+    <div class="logo-sub">Price Calculator</div>
+    <div>
+      <div class="rate-pill">
+        <div class="rate-dot loading" id="dot"></div>
+        <span id="rate-status">Fetching rates...</span>
+      </div>
     </div>
   </div>
 
@@ -245,14 +249,14 @@
             <span class="rval" id="r-gst">—</span>
           </div>
           <div class="selling-row">
-            <span class="selling-label">Selling price</span>
+            <span class="selling-label" id="selling-label">Selling price</span>
             <span class="selling-val" id="r-total">—</span>
           </div>
           <button class="copy-btn" onclick="copyText()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
             </svg>
-            Copy for WhatsApp
+            Copy
           </button>
           <button class="reset-btn" onclick="resetForm()">Clear & start over</button>
         </div>
@@ -352,6 +356,7 @@
     const gst = selling * 3 / 103;
     document.getElementById('r-gold').textContent = fmt(goldVal);
     document.getElementById('r-mc-label').textContent = `Value added (making ${mc}%)`;
+    document.getElementById('selling-label').textContent = `Selling price at ${mc}% MC`;
     document.getElementById('r-mc').textContent = fmt(mcVal);
     document.getElementById('r-stone').textContent = fmt(stone);
     document.getElementById('r-gst').textContent = fmt(gst);
@@ -372,7 +377,7 @@
       const btn = document.querySelector('.copy-btn');
       btn.textContent = '✓ Copied!';
       setTimeout(() => {
-        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy for WhatsApp`;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`;
       }, 2000);
     });
   }
