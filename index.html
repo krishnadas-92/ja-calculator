@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JA Price Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:opsz,wght@9..144,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --surface2: #222222;
+      --border: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.14);
+      --gold: #c9a84c;
+      --gold-soft: rgba(201,168,76,0.15);
+      --gold-border: rgba(201,168,76,0.3);
+      --text: #f0f0f0;
+      --text-muted: rgba(240,240,240,0.5);
+      --text-dim: rgba(240,240,240,0.3);
+      --green: #4caf7d;
+      --green-soft: rgba(76,175,125,0.12);
+      --red: #e05555;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+    .rate-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 0.5px solid var(--border2);
+      border-radius: 100px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .rate-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+    .rate-dot.loading { background: #888; animation: pulse 1.2s infinite; }
+    .rate-dot.error { background: var(--red); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+    }
+
+    /* Purity selector */
+    .purity-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 0;
+    }
+    .purity-btn {
+      background: var(--surface2);
+      border: 0.5px solid var(--border2);
+      border-radius: 10px;
+      padding: 10px 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+      color: var(--text-muted);
+    }
+    .purity-btn:hover { border-color: var(--gold-border); color: var(--text); }
+    .purity-btn.active {
+      background: var(--gold-soft);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .purity-btn .kt { font-size: 14px; font-weight: 600; }
+    .purity-btn .rate-val { font-size: 11px; margin-top: 2px; opacity: 0.7; }
+
+    /* Form fields */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .field-row.three { grid-template-columns: 1fr 1fr 1fr; }
+    .field-row.single { grid-template-columns: 1fr; }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .field input {
+      background: var(--surface2);
+      border: 0.5px solid var(--border2);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    .field input:focus { border-color: var(--gold-border); }
+    .field input::placeholder { color: var(--text-dim); }
+
+    .net-weight-tag {
+      font-size: 11px;
+      color: var(--gold);
+      margin-top: -4px;
+      margin-bottom: 6px;
+      min-height: 16px;
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      margin: 16px 0;
+    }
+
+    /* Results */
+    .result-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 0.5px solid var(--border);
+      font-size: 14px;
+    }
+    .result-row:last-of-type { border-bottom: none; }
+    .result-row .rlabel { color: var(--text-muted); }
+    .result-row .rval { font-weight: 500; }
+    .result-gst .rval { color: var(--gold); }
+
+    .selling-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0 4px;
+      border-top: 0.5px solid var(--border2);
+      margin-top: 4px;
+    }
+    .selling-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .selling-val {
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      color: var(--gold);
+    }
+
+    /* Copy button */
+    .copy-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--gold-soft);
+      border: 0.5px solid var(--gold-border);
+      border-radius: 10px;
+      color: var(--gold);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+    .copy-btn:hover { background: rgba(201,168,76,0.22); }
+    .copy-btn:active { transform: scale(0.98); }
+    .copy-btn svg { width: 16px; height: 16px; }
+
+    /* Reset */
+    .reset-btn {
+      width: 100%;
+      padding: 11px;
+      background: transparent;
+      border: 0.5px solid var(--border2);
+      border-radius: 10px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.15s;
+    }
+    .reset-btn:hover { border-color: var(--border2); color: var(--text); background: var(--surface2); }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="logo">JA Calculator</div>
+    <div class="rate-pill">
+      <div class="rate-dot loading" id="dot"></div>
+      <span id="rate-status">Fetching rates...</span>
+    </div>
+  </div>
+
+  <!-- Stone details -->
+  <div class="card">
+    <div class="section-label">Stone details</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Stone weight (gm)</label>
+        <input type="number" id="stoneweight" placeholder="0.360" step="0.001" min="0" value="0" oninput="calcNet()">
+      </div>
+      <div class="field">
+        <label>Stone value (₹)</label>
+        <input type="number" id="stoneval" placeholder="540" step="1" min="0" value="0" oninput="calc()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Gold details -->
+  <div class="card">
+    <div class="section-label">Gold purity</div>
+    <div class="purity-grid" id="purity-grid">
+      <button class="purity-btn active" onclick="setPurity(this,'22KT')" data-kt="22">
+        <div class="kt">22 KT</div>
+        <div class="rate-val" id="r22">—</div>
+      </button>
+      <button class="purity-btn" onclick="setPurity(this,'24KT')" data-kt="24">
+        <div class="kt">24 KT</div>
+        <div class="rate-val" id="r24">—</div>
+      </button>
+      <button class="purity-btn" onclick="setPurity(this,'18KT')" data-kt="18">
+        <div class="kt">18 KT</div>
+        <div class="rate-val" id="r18">—</div>
+      </button>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section-label">Item details</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Gross weight (gm)</label>
+        <input type="number" id="gross" placeholder="14.170" step="0.001" min="0" oninput="calcNet()">
+      </div>
+      <div class="field">
+        <label>Making charge (%)</label>
+        <input type="number" id="mc" placeholder="20" step="0.5" min="0" oninput="calc()">
+      </div>
+    </div>
+    <div class="net-weight-tag" id="net-tag"></div>
+    <div class="field-row single">
+      <div class="field">
+        <label>Gold rate (₹/gm) — auto from purity</label>
+        <input type="number" id="rate" placeholder="13430" step="1" min="0" oninput="calc()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="result-card" id="results">
+    <div class="section-label">Breakdown</div>
+    <div class="result-row">
+      <span class="rlabel">Gold value</span>
+      <span class="rval" id="r-gold">—</span>
+    </div>
+    <div class="result-row">
+      <span class="rlabel" id="r-mc-label">Value added (making)</span>
+      <span class="rval" id="r-mc">—</span>
+    </div>
+    <div class="result-row">
+      <span class="rlabel">Stone charge</span>
+      <span class="rval" id="r-stone">—</span>
+    </div>
+    <div class="result-row result-gst">
+      <span class="rlabel">GST @ 3% (inclusive)</span>
+      <span class="rval" id="r-gst">—</span>
+    </div>
+    <div class="selling-row">
+      <span class="selling-label">Selling price</span>
+      <span class="selling-val" id="r-total">—</span>
+    </div>
+    <button class="copy-btn" onclick="copyText()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      Copy for WhatsApp
+    </button>
+    <button class="reset-btn" onclick="resetForm()">Clear & start over</button>
+  </div>
+
+  <div class="footer">Rates from AKGSMA · Kerala &nbsp;·&nbsp; Jos Alukkas internal tool</div>
+</div>
+
+<script>
+  const FEED_URL = "https://docs.google.com/spreadsheets/d/1k9SR-mcY5R2B9MgKkNoAbKajYGrL3kcuZvsly-TSI2M/gviz/tq?sheet=Rates&headers=0";
+
+  let rates = { gold22k: null, gold18k: null };
+  let selectedKT = '22KT';
+  let netWeight = 0;
+
+  // Fetch rates via JSONP (same method as ja-ratess board)
+  function loadRates() {
+    const cb = '__rates_cb_' + Date.now();
+    const s = document.createElement('script');
+    const cleanup = () => { try { delete window[cb]; } catch(e){} if(s.parentNode) s.parentNode.removeChild(s); };
+    window[cb] = json => {
+      try { applyRates(json); } catch(e) { setRateError(); }
+      cleanup();
+    };
+    s.onerror = () => { setRateError(); cleanup(); };
+    s.src = FEED_URL + '&tqx=responseHandler:' + cb;
+    document.head.appendChild(s);
+  }
+
+  function applyRates(json) {
+    const toNum = cell => { const v = cell && cell.v; const n = parseFloat(String(v).replace(/[^0-9.]/g,'')); return isNaN(n)?null:n; };
+    const map = {};
+    json.table.rows.forEach(r => { const k = r.c[0] && r.c[0].v; if(k!=null) map[k] = r.c[1] || {}; });
+    const g22 = toNum(map.Gold22K);
+    const g18 = toNum(map.Gold18K);
+    if(g22!=null) rates.gold22k = g22;
+    if(g18!=null) rates.gold18k = g18;
+    updateRateDisplay();
+  }
+
+  function updateRateDisplay() {
+    const g22 = rates.gold22k;
+    const g18 = rates.gold18k;
+    const g24 = g22 ? Math.round(g22 / 0.91634) : null;
+
+    document.getElementById('r22').textContent = g22 ? '₹' + g22.toLocaleString('en-IN') : '—';
+    document.getElementById('r18').textContent = g18 ? '₹' + g18.toLocaleString('en-IN') : '—';
+    document.getElementById('r24').textContent = g24 ? '₹' + g24.toLocaleString('en-IN') : '—';
+
+    // Set rate input based on selected purity
+    setRateFromPurity();
+
+    const dot = document.getElementById('dot');
+    dot.className = 'rate-dot';
+    document.getElementById('rate-status').textContent = g22 ? '₹' + g22.toLocaleString('en-IN') + ' · 22KT' : 'Rates loaded';
+  }
+
+  function setRateError() {
+    document.getElementById('dot').className = 'rate-dot error';
+    document.getElementById('rate-status').textContent = 'Rate fetch failed';
+  }
+
+  function setRateFromPurity() {
+    const g22 = rates.gold22k;
+    const g18 = rates.gold18k;
+    const g24 = g22 ? Math.round(g22 / 0.91634) : null;
+    const rateInput = document.getElementById('rate');
+    if(selectedKT === '22KT' && g22) rateInput.value = g22;
+    else if(selectedKT === '24KT' && g24) rateInput.value = g24;
+    else if(selectedKT === '18KT' && g18) rateInput.value = g18;
+    calc();
+  }
+
+  function setPurity(el, kt) {
+    document.querySelectorAll('.purity-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    selectedKT = kt;
+    setRateFromPurity();
+  }
+
+  function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+
+  function calcNet() {
+    const gross = parseFloat(document.getElementById('gross').value) || 0;
+    const sw = parseFloat(document.getElementById('stoneweight').value) || 0;
+    netWeight = Math.max(0, gross - sw);
+    const tag = document.getElementById('net-tag');
+    if(gross > 0) {
+      tag.textContent = `Net weight = ${netWeight.toFixed(3)} gm  (${gross} − ${sw})`;
+    } else {
+      tag.textContent = '';
+    }
+    calc();
+  }
+
+  function calc() {
+    const rate = parseFloat(document.getElementById('rate').value) || 0;
+    const mc = parseFloat(document.getElementById('mc').value) || 0;
+    const stone = parseFloat(document.getElementById('stoneval').value) || 0;
+
+    if(!netWeight || !rate) { document.getElementById('results').style.display = 'none'; return; }
+
+    const goldVal = netWeight * rate;
+    const mcVal = goldVal * mc / 100;
+    const totalVal = goldVal + mcVal + stone;
+    const selling = totalVal * 103 / 100;
+    const gst = selling * 3 / 103;
+
+    document.getElementById('r-gold').textContent = fmt(goldVal);
+    document.getElementById('r-mc-label').textContent = `Value added (making ${mc}%)`;
+    document.getElementById('r-mc').textContent = fmt(mcVal);
+    document.getElementById('r-stone').textContent = fmt(stone);
+    document.getElementById('r-gst').textContent = fmt(gst);
+    document.getElementById('r-total').textContent = fmt(selling);
+    document.getElementById('results').style.display = 'block';
+  }
+
+  function copyText() {
+    const gold = document.getElementById('r-gold').textContent;
+    const mc = document.getElementById('mc').value || '0';
+    const mcVal = document.getElementById('r-mc').textContent;
+    const stone = document.getElementById('r-stone').textContent;
+    const gst = document.getElementById('r-gst').textContent;
+    const total = document.getElementById('r-total').textContent;
+    const txt = `Gold Value: ${gold}\nValue Added (making ${mc}%): ${mcVal}\nStone Charge: ${stone}\nGST @ 3% (inclusive): ${gst}\nSelling Price: ${total}`;
+    navigator.clipboard.writeText(txt).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => {
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy for WhatsApp`;
+      }, 2000);
+    });
+  }
+
+  function resetForm() {
+    document.getElementById('gross').value = '';
+    document.getElementById('mc').value = '';
+    document.getElementById('stoneweight').value = '0';
+    document.getElementById('stoneval').value = '0';
+    document.getElementById('net-tag').textContent = '';
+    netWeight = 0;
+    document.getElementById('results').style.display = 'none';
+  }
+
+  loadRates();
+</script>
+</body>
+</html>
