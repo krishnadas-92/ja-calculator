@@ -55,7 +55,7 @@
 
     /* Rates bar */
     .rates-bar {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px;
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px;
     }
     .purity-btn {
       background: var(--surface2); border: 0.5px solid var(--border2);
@@ -306,6 +306,8 @@
     const g24 = g22 ? Math.round(g22 / 0.91634) : null;
     document.getElementById('r22').textContent = g22 ? '₹' + g22.toLocaleString('en-IN') : '—';
     document.getElementById('r18').textContent = g18 ? '₹' + g18.toLocaleString('en-IN') : '—';
+    const g14 = g22 ? Math.round(g22 * 14 / 22) : null;
+    document.getElementById('r14').textContent = g14 ? '₹' + g14.toLocaleString('en-IN') : '—';
     document.getElementById('r24').textContent = g24 ? '₹' + g24.toLocaleString('en-IN') : '—';
     setRateFromPurity();
     document.getElementById('dot').className = 'rate-dot';
@@ -324,6 +326,7 @@
     if(selectedKT === '22KT' && g22) ri.value = g22;
     else if(selectedKT === '24KT' && g24) ri.value = g24;
     else if(selectedKT === '18KT' && g18) ri.value = g18;
+    else if(selectedKT === '14KT') { const g14 = g22 ? Math.round(g22 * 14 / 22) : null; if(g14) ri.value = g14; }
     calc();
   }
 
