@@ -163,32 +163,43 @@
 
   <div class="header">
     <div class="logo">
-      <svg viewBox="0 0 320 60" xmlns="http://www.w3.org/2000/svg" style="height:52px;width:auto">
+      <svg viewBox="0 0 520 80" xmlns="http://www.w3.org/2000/svg" style="height:56px;width:auto">
         <defs>
           <style>
-            .ja-text { font-family: 'Fraunces', Georgia, serif; font-size: 48px; font-weight: 700; fill: #c9a84c; letter-spacing: 4px; }
+            .ja-text { font-family: 'Fraunces', Georgia, serif; font-size: 56px; font-weight: 700; fill: #c9a84c; letter-spacing: 2px; }
+            .ja-tag  { font-family: 'Inter', Arial, sans-serif; font-size: 10px; font-weight: 500; fill: #a07830; letter-spacing: 3.5px; }
           </style>
         </defs>
-        <!-- JOS text -->
-        <text x="0" y="50" class="ja-text">JOS</text>
-        <!-- Ornament flower in gold -->
-        <g transform="translate(148,28) scale(0.9)" fill="#c9a84c">
-          <circle cx="0" cy="0" r="4"/>
-          <ellipse cx="0" cy="-11" rx="3" ry="6"/>
-          <ellipse cx="0" cy="11" rx="3" ry="6"/>
-          <ellipse cx="-11" cy="0" rx="6" ry="3"/>
-          <ellipse cx="11" cy="0" rx="6" ry="3"/>
-          <ellipse cx="-8" cy="-8" rx="3" ry="6" transform="rotate(-45,-8,-8)"/>
-          <ellipse cx="8" cy="-8" rx="3" ry="6" transform="rotate(45,8,-8)"/>
-          <ellipse cx="-8" cy="8" rx="3" ry="6" transform="rotate(45,-8,8)"/>
-          <ellipse cx="8" cy="8" rx="3" ry="6" transform="rotate(-45,8,8)"/>
-          <circle cx="0" cy="0" r="5" fill="#0f0f0f"/>
-          <circle cx="0" cy="0" r="3" fill="#c9a84c"/>
+        <!-- JOS -->
+        <text x="0" y="56" class="ja-text">JOS</text>
+        <!-- Floral medallion ornament (gold, matching actual logo) -->
+        <g transform="translate(196,34)" fill="#c9a84c">
+          <!-- outer petals 8-way -->
+          <ellipse cx="0"   cy="-18" rx="4.5" ry="9" />
+          <ellipse cx="0"   cy="18"  rx="4.5" ry="9" />
+          <ellipse cx="-18" cy="0"   rx="9"   ry="4.5"/>
+          <ellipse cx="18"  cy="0"   rx="9"   ry="4.5"/>
+          <ellipse cx="-13" cy="-13" rx="4.5" ry="9" transform="rotate(-45,-13,-13)"/>
+          <ellipse cx="13"  cy="-13" rx="4.5" ry="9" transform="rotate(45,13,-13)"/>
+          <ellipse cx="-13" cy="13"  rx="4.5" ry="9" transform="rotate(45,-13,13)"/>
+          <ellipse cx="13"  cy="13"  rx="4.5" ry="9" transform="rotate(-45,13,13)"/>
+          <!-- inner ring -->
+          <circle cx="0" cy="0" r="10"/>
+          <!-- centre hole -->
+          <circle cx="0" cy="0" r="6" fill="#0f0f0f"/>
+          <!-- centre dot -->
+          <circle cx="0" cy="0" r="3.5"/>
+          <!-- tiny scroll hints at diagonals -->
+          <circle cx="-7" cy="0" r="1.5" fill="#0f0f0f"/>
+          <circle cx="7"  cy="0" r="1.5" fill="#0f0f0f"/>
+          <circle cx="0" cy="-7" r="1.5" fill="#0f0f0f"/>
+          <circle cx="0" cy="7"  r="1.5" fill="#0f0f0f"/>
         </g>
-        <!-- ALUKKAS text -->
-        <text x="168" y="50" class="ja-text">ALUKKAS</text>
+        <!-- ALUKKAS -->
+        <text x="222" y="56" class="ja-text">ALUKKAS</text>
       </svg>
     </div>
+
     <div class="logo-sub">Price Calculator</div>
     <div>
       <div class="rate-pill">
