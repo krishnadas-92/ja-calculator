@@ -34,29 +34,20 @@
     }
     .container { max-width: 960px; margin: 0 auto; }
 
-    /* Header */
-    .header {
-      text-align: center;
-      margin-bottom: 16px;
-    }
-    .logo { font-family: 'Fraunces', serif; font-size: 28px; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; }
-    .logo-ornament { color: var(--gold); margin: 0 6px; font-size: 18px; }
-    .logo-sub { font-size: 11px; color: var(--text-dim); letter-spacing: 0.22em; text-transform: uppercase; margin-top: 3px; }
+    .header { text-align: center; margin-bottom: 16px; }
     .rate-pill {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--surface); border: 0.5px solid var(--border2);
       border-radius: 100px; padding: 5px 12px; font-size: 12px; color: var(--text-muted);
       margin-top: 8px;
     }
+    .logo-sub { font-size: 11px; color: var(--text-dim); letter-spacing: 0.22em; text-transform: uppercase; margin-top: 4px; }
     .rate-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
     .rate-dot.loading { background: #888; animation: pulse 1.2s infinite; }
     .rate-dot.error { background: var(--red); }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    /* Rates bar */
-    .rates-bar {
-      display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px;
-    }
+    .rates-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px; }
     .purity-btn {
       background: var(--surface2); border: 0.5px solid var(--border2);
       border-radius: 10px; padding: 10px 8px; cursor: pointer;
@@ -67,26 +58,12 @@
     .purity-btn .kt { font-size: 14px; font-weight: 600; }
     .purity-btn .rate-val { font-size: 11px; margin-top: 2px; opacity: 0.7; }
 
-    /* Two-column layout */
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      align-items: start;
-    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
 
-    /* Cards */
-    .card {
-      background: var(--surface); border: 0.5px solid var(--border);
-      border-radius: 16px; padding: 18px; margin-bottom: 12px;
-    }
+    .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
     .card:last-child { margin-bottom: 0; }
-    .section-label {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px;
-    }
+    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px; }
 
-    /* Fields */
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
     .field-row.single { grid-template-columns: 1fr; }
     .field { display: flex; flex-direction: column; gap: 5px; }
@@ -100,61 +77,38 @@
     .field input:focus { border-color: var(--gold-border); }
     .field input::placeholder { color: var(--text-dim); }
     .net-tag { font-size: 11px; color: var(--gold); min-height: 16px; margin: -4px 0 8px; }
-    .divider { border: none; border-top: 0.5px solid var(--border); margin: 14px 0; }
 
-    /* Results */
-    .result-card {
-      background: var(--surface); border: 0.5px solid var(--border);
-      border-radius: 16px; padding: 18px;
-    }
-    .result-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 9px 0; border-bottom: 0.5px solid var(--border); font-size: 14px;
-    }
+    .result-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 18px; }
+    .result-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 0.5px solid var(--border); font-size: 14px; }
     .result-row:last-of-type { border-bottom: none; }
     .rlabel { color: var(--text-muted); }
     .rval { font-weight: 500; }
     .gst-row .rval { color: var(--gold); }
-    .selling-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 0 4px; border-top: 0.5px solid var(--border2); margin-top: 4px;
-    }
+    .selling-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 4px; border-top: 0.5px solid var(--border2); margin-top: 4px; }
     .selling-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
     .selling-val { font-family: 'Fraunces', serif; font-size: 28px; color: var(--gold); }
+    .empty-state { padding: 32px 0; text-align: center; color: var(--text-dim); font-size: 13px; line-height: 1.8; }
 
-    .empty-state {
-      padding: 32px 0;
-      text-align: center;
-      color: var(--text-dim);
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    /* Buttons */
     .copy-btn {
-      width: 100%; padding: 12px;
-      background: var(--gold-soft); border: 0.5px solid var(--gold-border);
-      border-radius: 10px; color: var(--gold);
-      font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif;
-      cursor: pointer; margin-top: 14px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: all 0.15s;
+      width: 100%; padding: 12px; background: var(--gold-soft); border: 0.5px solid var(--gold-border);
+      border-radius: 10px; color: var(--gold); font-size: 14px; font-weight: 500;
+      font-family: 'Inter', sans-serif; cursor: pointer; margin-top: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s;
     }
     .copy-btn:hover { background: rgba(201,168,76,0.22); }
     .copy-btn:active { transform: scale(0.98); }
     .copy-btn svg { width: 15px; height: 15px; }
     .reset-btn {
-      width: 100%; padding: 10px; background: transparent;
-      border: 0.5px solid var(--border2); border-radius: 10px;
-      color: var(--text-muted); font-size: 13px; font-family: 'Inter', sans-serif;
-      cursor: pointer; margin-top: 8px; transition: all 0.15s;
+      width: 100%; padding: 10px; background: transparent; border: 0.5px solid var(--border2);
+      border-radius: 10px; color: var(--text-muted); font-size: 13px;
+      font-family: 'Inter', sans-serif; cursor: pointer; margin-top: 8px; transition: all 0.15s;
     }
     .reset-btn:hover { color: var(--text); background: var(--surface2); }
-
     .footer { text-align: center; font-size: 11px; color: var(--text-dim); margin-top: 20px; }
 
     @media (max-width: 600px) {
       .two-col { grid-template-columns: 1fr; }
+      .rates-bar { grid-template-columns: repeat(2,1fr); }
     }
   </style>
 </head>
@@ -163,11 +117,10 @@
 
   <div class="header">
     <div class="logo">
-      <img src="https://raw.githubusercontent.com/krishnadas-92/ja-calculator/main/logo_cropped.png" 
-           alt="Jos Alukkas" 
+      <img src="https://raw.githubusercontent.com/krishnadas-92/ja-calculator/main/logo_cropped.png"
+           alt="Jos Alukkas"
            style="height:36px;width:auto;filter:invert(1) sepia(1) saturate(3) hue-rotate(5deg) brightness(0.85);">
     </div>
-
     <div class="logo-sub">Price Calculator</div>
     <div>
       <div class="rate-pill">
@@ -177,7 +130,6 @@
     </div>
   </div>
 
-  <!-- Rates bar on top -->
   <div class="rates-bar">
     <button class="purity-btn active" onclick="setPurity(this,'22KT')">
       <div class="kt">22 KT</div><div class="rate-val" id="r22">—</div>
@@ -188,12 +140,12 @@
     <button class="purity-btn" onclick="setPurity(this,'18KT')">
       <div class="kt">18 KT</div><div class="rate-val" id="r18">—</div>
     </button>
+    <button class="purity-btn" onclick="setPurity(this,'14KT')">
+      <div class="kt">14 KT</div><div class="rate-val" id="r14">—</div>
+    </button>
   </div>
 
-  <!-- Two column -->
   <div class="two-col">
-
-    <!-- Left: Inputs -->
     <div>
       <div class="card">
         <div class="section-label">Stone details</div>
@@ -225,13 +177,12 @@
         <div class="field-row single">
           <div class="field">
             <label>Gold rate (₹/gm) — auto from purity above</label>
-            <input type="number" id="rate" placeholder="13430" step="1" min="0" oninput="calc()">
+            <input type="number" id="rate" placeholder="13375" step="1" min="0" oninput="calc()">
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Right: Results -->
     <div>
       <div class="result-card">
         <div class="section-label">Breakdown</div>
@@ -267,7 +218,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <div class="footer">Rates from AKGSMA · Kerala &nbsp;·&nbsp; Jos Alukkas internal tool</div>
@@ -304,11 +254,11 @@
     const g22 = rates.gold22k;
     const g18 = rates.gold18k;
     const g24 = g22 ? Math.round(g22 / 0.91634) : null;
+    const g14 = g22 ? Math.round(g22 * 14 / 22) : null;
     document.getElementById('r22').textContent = g22 ? '₹' + g22.toLocaleString('en-IN') : '—';
     document.getElementById('r18').textContent = g18 ? '₹' + g18.toLocaleString('en-IN') : '—';
-    const g14 = g22 ? Math.round(g22 * 14 / 22) : null;
-    document.getElementById('r14').textContent = g14 ? '₹' + g14.toLocaleString('en-IN') : '—';
     document.getElementById('r24').textContent = g24 ? '₹' + g24.toLocaleString('en-IN') : '—';
+    document.getElementById('r14').textContent = g14 ? '₹' + g14.toLocaleString('en-IN') : '—';
     setRateFromPurity();
     document.getElementById('dot').className = 'rate-dot';
     document.getElementById('rate-status').textContent = g22 ? '₹' + g22.toLocaleString('en-IN') + ' · 22KT live' : 'Rates loaded';
@@ -322,11 +272,12 @@
   function setRateFromPurity() {
     const g22 = rates.gold22k, g18 = rates.gold18k;
     const g24 = g22 ? Math.round(g22 / 0.91634) : null;
+    const g14 = g22 ? Math.round(g22 * 14 / 22) : null;
     const ri = document.getElementById('rate');
     if(selectedKT === '22KT' && g22) ri.value = g22;
     else if(selectedKT === '24KT' && g24) ri.value = g24;
     else if(selectedKT === '18KT' && g18) ri.value = g18;
-    else if(selectedKT === '14KT') { const g14 = g22 ? Math.round(g22 * 14 / 22) : null; if(g14) ri.value = g14; }
+    else if(selectedKT === '14KT' && g14) ri.value = g14;
     calc();
   }
 
