@@ -106,6 +106,18 @@
     .reset-btn:hover { color: var(--text); background: var(--surface2); }
     .footer { text-align: center; font-size: 11px; color: var(--text-dim); margin-top: 20px; }
 
+    @keyframes ornamentShine {
+      0%, 100% { filter: brightness(0.85) sepia(1) saturate(3) hue-rotate(5deg); transform: scale(1); }
+      50% { filter: brightness(2) sepia(1) saturate(5) hue-rotate(5deg) drop-shadow(0 0 6px #c9a84c); transform: scale(1.15); }
+    }
+    .ornament-svg { animation: ornamentShine 2s ease-in-out; animation-delay: 3s; animation-iteration-count: infinite; animation-play-state: running; }
+
+    @keyframes ornamentShine {
+      0%, 85%, 100% { filter: brightness(1); }
+      92% { filter: brightness(2.5) drop-shadow(0 0 8px #c9a84c) drop-shadow(0 0 16px #c9a84c); }
+    }
+    .ornament-img { animation: ornamentShine 4s ease-in-out infinite; }
+
     @media (max-width: 600px) {
       .two-col { grid-template-columns: 1fr; }
       .rates-bar { grid-template-columns: repeat(2,1fr); }
@@ -116,10 +128,33 @@
 <div class="container">
 
   <div class="header">
-    <div class="logo">
-      <img src="https://raw.githubusercontent.com/krishnadas-92/ja-calculator/main/logo_cropped.png"
-           alt="Jos Alukkas"
-           style="height:36px;width:auto;filter:invert(1) sepia(1) saturate(3) hue-rotate(5deg) brightness(0.85);">
+    <div class="logo" style="display:flex;align-items:center;justify-content:center;gap:6px;">
+      <span style="font-family:'Fraunces',Georgia,serif;font-size:32px;font-weight:700;color:#c9a84c;letter-spacing:2px;">JOS</span>
+      <svg class="ornament-svg" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" style="height:36px;width:36px;">
+        <g transform="translate(25,25)" fill="#c9a84c">
+          <!-- 8 outer petals -->
+          <ellipse cx="0" cy="-14" rx="3.5" ry="7"/>
+          <ellipse cx="0" cy="14" rx="3.5" ry="7"/>
+          <ellipse cx="-14" cy="0" rx="7" ry="3.5"/>
+          <ellipse cx="14" cy="0" rx="7" ry="3.5"/>
+          <ellipse cx="-10" cy="-10" rx="3.5" ry="7" transform="rotate(-45,-10,-10)"/>
+          <ellipse cx="10" cy="-10" rx="3.5" ry="7" transform="rotate(45,10,-10)"/>
+          <ellipse cx="-10" cy="10" rx="3.5" ry="7" transform="rotate(45,-10,10)"/>
+          <ellipse cx="10" cy="10" rx="3.5" ry="7" transform="rotate(-45,10,10)"/>
+          <!-- inner ring -->
+          <circle cx="0" cy="0" r="8"/>
+          <!-- centre hole -->
+          <circle cx="0" cy="0" r="5" fill="#0f0f0f"/>
+          <!-- centre dot -->
+          <circle cx="0" cy="0" r="2.5"/>
+          <!-- 4 inner dots -->
+          <circle cx="-3.5" cy="0" r="1" fill="#0f0f0f"/>
+          <circle cx="3.5" cy="0" r="1" fill="#0f0f0f"/>
+          <circle cx="0" cy="-3.5" r="1" fill="#0f0f0f"/>
+          <circle cx="0" cy="3.5" r="1" fill="#0f0f0f"/>
+        </g>
+      </svg>
+      <span style="font-family:'Fraunces',Georgia,serif;font-size:32px;font-weight:700;color:#c9a84c;letter-spacing:2px;">ALUKKAS</span>
     </div>
     <div class="logo-sub">Price Calculator</div>
     <div>
