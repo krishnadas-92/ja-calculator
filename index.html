@@ -113,10 +113,10 @@
     .ornament-svg { animation: ornamentShine 2s ease-in-out; animation-delay: 3s; animation-iteration-count: infinite; animation-play-state: running; }
 
     @keyframes ornamentShine {
-      0%, 85%, 100% { filter: brightness(1); }
-      92% { filter: brightness(2.5) drop-shadow(0 0 8px #c9a84c) drop-shadow(0 0 16px #c9a84c); }
+      0%, 60%, 100% { filter: brightness(1); }
+      70%, 90% { filter: brightness(2.5) drop-shadow(0 0 8px #c9a84c) drop-shadow(0 0 16px #c9a84c); }
     }
-    .ornament-img { animation: ornamentShine 4s ease-in-out infinite; }
+    .ornament-img { animation: ornamentShine 6s ease-in-out infinite; }
 
     @media (max-width: 600px) {
       .two-col { grid-template-columns: 1fr; }
@@ -128,7 +128,7 @@
 <div class="container">
 
   <div class="header">
-    <div class="logo" style="display:flex;align-items:center;justify-content:center;gap:0;">
+    <div class="logo" style="display:flex;align-items:center;justify-content:center;gap:6px;">
       <img src="https://raw.githubusercontent.com/krishnadas-92/ja-calculator/main/jos.png" alt="JOS" style="height:40px;width:auto;">
       <img src="https://raw.githubusercontent.com/krishnadas-92/ja-calculator/main/ornament.png" alt="" class="ornament-img" style="height:40px;width:auto;">
       <img src="https://raw.githubusercontent.com/krishnadas-92/ja-calculator/main/alukkas.png" alt="ALUKKAS" style="height:40px;width:auto;">
