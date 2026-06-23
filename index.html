@@ -113,10 +113,12 @@
     .ornament-svg { animation: ornamentShine 2s ease-in-out; animation-delay: 3s; animation-iteration-count: infinite; animation-play-state: running; }
 
     @keyframes ornamentShine {
-      0%, 60%, 100% { filter: brightness(1); }
-      70%, 90% { filter: brightness(2.5) drop-shadow(0 0 8px #c9a84c) drop-shadow(0 0 16px #c9a84c); }
+      0%, 70%, 100% { filter: brightness(1); }
+      75% { filter: brightness(3.5) drop-shadow(0 0 12px #fff8c0) drop-shadow(0 0 24px #c9a84c); }
+      85% { filter: brightness(3.5) drop-shadow(0 0 12px #fff8c0) drop-shadow(0 0 24px #c9a84c); }
+      90% { filter: brightness(1); }
     }
-    .ornament-img { animation: ornamentShine 6s ease-in-out infinite; }
+    .ornament-img { animation: ornamentShine 8s ease-in-out infinite; }
 
     @media (max-width: 600px) {
       .two-col { grid-template-columns: 1fr; }
