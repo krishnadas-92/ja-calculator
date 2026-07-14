@@ -24,56 +24,41 @@
       --green: #4caf7d;
       --red: #e05555;
     }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
-      min-height: 100vh;
-      padding: 20px 16px 40px;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; min-height: 100vh; padding: 20px 16px 40px; }
     .container { max-width: 960px; margin: 0 auto; }
 
     .header { text-align: center; margin-bottom: 16px; }
-    .rate-pill {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--surface); border: 0.5px solid var(--border2);
-      border-radius: 100px; padding: 5px 12px; font-size: 12px; color: var(--text-muted);
-      margin-top: 8px;
-    }
     .logo-sub { font-size: 11px; color: var(--text-dim); letter-spacing: 0.22em; text-transform: uppercase; margin-top: 4px; }
+    .rate-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 0.5px solid var(--border2); border-radius: 100px; padding: 5px 12px; font-size: 12px; color: var(--text-muted); margin-top: 8px; }
     .rate-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
     .rate-dot.loading { background: #888; animation: pulse 1.2s infinite; }
     .rate-dot.error { background: var(--red); }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    .rates-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px; }
-    .purity-btn {
-      background: var(--surface2); border: 0.5px solid var(--border2);
-      border-radius: 10px; padding: 10px 8px; cursor: pointer;
-      text-align: center; transition: all 0.15s; color: var(--text-muted);
+    @keyframes ornamentShine {
+      0%, 65%, 100% { filter: brightness(1) drop-shadow(0 0 0px #c9a84c); }
+      75% { filter: brightness(2.5) drop-shadow(0 0 12px #c9a84c) drop-shadow(0 0 20px #c9a84c); }
+      80% { filter: brightness(2.5) drop-shadow(0 0 12px #c9a84c) drop-shadow(0 0 20px #c9a84c); }
+      90% { filter: brightness(1) drop-shadow(0 0 0px #c9a84c); }
     }
+    .ornament-img { animation: ornamentShine 8s ease-in-out infinite; }
+
+    .rates-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px; }
+    .purity-btn { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 10px; padding: 10px 8px; cursor: pointer; text-align: center; transition: all 0.15s; color: var(--text-muted); }
     .purity-btn:hover { border-color: var(--gold-border); color: var(--text); }
     .purity-btn.active { background: var(--gold-soft); border-color: var(--gold); color: var(--gold); }
     .purity-btn .kt { font-size: 14px; font-weight: 600; }
     .purity-btn .rate-val { font-size: 11px; margin-top: 2px; opacity: 0.7; }
 
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
-
     .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
     .card:last-child { margin-bottom: 0; }
     .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px; }
-
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
     .field-row.single { grid-template-columns: 1fr; }
     .field { display: flex; flex-direction: column; gap: 5px; }
     .field label { font-size: 11px; color: var(--text-muted); font-weight: 500; }
-    .field input {
-      background: var(--surface2); border: 0.5px solid var(--border2);
-      border-radius: 8px; padding: 10px 12px; color: var(--text);
-      font-size: 14px; font-family: 'Inter', sans-serif;
-      outline: none; transition: border-color 0.15s; width: 100%;
-    }
+    .field input { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 8px; padding: 10px 12px; color: var(--text); font-size: 14px; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.15s; width: 100%; }
     .field input:focus { border-color: var(--gold-border); }
     .field input::placeholder { color: var(--text-dim); }
     .net-tag { font-size: 11px; color: var(--gold); min-height: 16px; margin: -4px 0 8px; }
@@ -89,36 +74,12 @@
     .selling-val { font-family: 'Fraunces', serif; font-size: 28px; color: var(--gold); }
     .empty-state { padding: 32px 0; text-align: center; color: var(--text-dim); font-size: 13px; line-height: 1.8; }
 
-    .copy-btn {
-      width: 100%; padding: 12px; background: var(--gold-soft); border: 0.5px solid var(--gold-border);
-      border-radius: 10px; color: var(--gold); font-size: 14px; font-weight: 500;
-      font-family: 'Inter', sans-serif; cursor: pointer; margin-top: 14px;
-      display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s;
-    }
+    .copy-btn { width: 100%; padding: 12px; background: var(--gold-soft); border: 0.5px solid var(--gold-border); border-radius: 10px; color: var(--gold); font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s; }
     .copy-btn:hover { background: rgba(201,168,76,0.22); }
-    .copy-btn:active { transform: scale(0.98); }
     .copy-btn svg { width: 15px; height: 15px; }
-    .reset-btn {
-      width: 100%; padding: 10px; background: transparent; border: 0.5px solid var(--border2);
-      border-radius: 10px; color: var(--text-muted); font-size: 13px;
-      font-family: 'Inter', sans-serif; cursor: pointer; margin-top: 8px; transition: all 0.15s;
-    }
+    .reset-btn { width: 100%; padding: 10px; background: transparent; border: 0.5px solid var(--border2); border-radius: 10px; color: var(--text-muted); font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; margin-top: 8px; transition: all 0.15s; }
     .reset-btn:hover { color: var(--text); background: var(--surface2); }
     .footer { text-align: center; font-size: 11px; color: var(--text-dim); margin-top: 20px; }
-
-    @keyframes ornamentShine {
-      0%, 100% { filter: brightness(0.85) sepia(1) saturate(3) hue-rotate(5deg); transform: scale(1); }
-      50% { filter: brightness(2) sepia(1) saturate(5) hue-rotate(5deg) drop-shadow(0 0 6px #c9a84c); transform: scale(1.15); }
-    }
-    .ornament-svg { animation: ornamentShine 2s ease-in-out; animation-delay: 3s; animation-iteration-count: infinite; animation-play-state: running; }
-
-    @keyframes ornamentShine {
-      0%, 65%, 100% { filter: brightness(1) drop-shadow(0 0 0px #c9a84c); }
-      75% { filter: brightness(2.5) drop-shadow(0 0 12px #c9a84c) drop-shadow(0 0 20px #c9a84c); }
-      80% { filter: brightness(2.5) drop-shadow(0 0 12px #c9a84c) drop-shadow(0 0 20px #c9a84c); }
-      90% { filter: brightness(1) drop-shadow(0 0 0px #c9a84c); }
-    }
-    .ornament-img { animation: ornamentShine 8s ease-in-out infinite; }
 
     @media (max-width: 600px) {
       .two-col { grid-template-columns: 1fr; }
@@ -174,7 +135,6 @@
           </div>
         </div>
       </div>
-
       <div class="card">
         <div class="section-label">Item details</div>
         <div class="field-row">
@@ -191,7 +151,7 @@
         <div class="field-row single">
           <div class="field">
             <label>Gold rate (₹/gm) — auto from purity above</label>
-            <input type="number" id="rate" placeholder="13375" step="1" min="0" oninput="calc()">
+            <input type="number" id="rate" placeholder="13090" step="1" min="0" oninput="calc()">
           </div>
         </div>
       </div>
@@ -239,7 +199,7 @@
 
 <script>
   const FEED_URL = "https://docs.google.com/spreadsheets/d/1k9SR-mcY5R2B9MgKkNoAbKajYGrL3kcuZvsly-TSI2M/gviz/tq?sheet=Rates&headers=0";
-  let rates = { gold22k: null, gold18k: null };
+  let gold22k = null;
   let selectedKT = '22KT';
   let netWeight = 0;
 
@@ -258,20 +218,25 @@
     const map = {};
     json.table.rows.forEach(r => { const k = r.c[0] && r.c[0].v; if(k!=null) map[k] = r.c[1] || {}; });
     const g22 = toNum(map.Gold22K);
-    const g18 = toNum(map.Gold18K);
-    if(g22!=null) rates.gold22k = g22;
-    if(g18!=null) rates.gold18k = g18;
+    if(g22 != null) gold22k = g22;
     updateRateDisplay();
   }
 
+  function deriveRates() {
+    const g22 = gold22k;
+    return {
+      g22: g22,
+      g24: g22 ? Math.round(g22 / 22 * 24) : null,
+      g18: g22 ? Math.round(g22 / 22 * 18) : null,
+      g14: g22 ? Math.round(g22 / 22 * 14) : null
+    };
+  }
+
   function updateRateDisplay() {
-    const g22 = rates.gold22k;
-    const g18 = rates.gold18k;
-    const g24 = g22 ? Math.round(g22 / 0.91634) : null;
-    const g14 = g22 ? Math.round(g22 * 14 / 22) : null;
+    const { g22, g24, g18, g14 } = deriveRates();
     document.getElementById('r22').textContent = g22 ? '₹' + g22.toLocaleString('en-IN') : '—';
-    document.getElementById('r18').textContent = g18 ? '₹' + g18.toLocaleString('en-IN') : '—';
     document.getElementById('r24').textContent = g24 ? '₹' + g24.toLocaleString('en-IN') : '—';
+    document.getElementById('r18').textContent = g18 ? '₹' + g18.toLocaleString('en-IN') : '—';
     document.getElementById('r14').textContent = g14 ? '₹' + g14.toLocaleString('en-IN') : '—';
     setRateFromPurity();
     document.getElementById('dot').className = 'rate-dot';
@@ -284,9 +249,7 @@
   }
 
   function setRateFromPurity() {
-    const g22 = rates.gold22k, g18 = rates.gold18k;
-    const g24 = g22 ? Math.round(g22 / 0.91634) : null;
-    const g14 = g22 ? Math.round(g22 * 14 / 22) : null;
+    const { g22, g24, g18, g14 } = deriveRates();
     const ri = document.getElementById('rate');
     if(selectedKT === '22KT' && g22) ri.value = g22;
     else if(selectedKT === '24KT' && g24) ri.value = g24;
@@ -308,8 +271,7 @@
     const gross = parseFloat(document.getElementById('gross').value) || 0;
     const sw = parseFloat(document.getElementById('stoneweight').value) || 0;
     netWeight = Math.max(0, gross - sw);
-    const tag = document.getElementById('net-tag');
-    tag.textContent = gross > 0 ? `Net weight = ${netWeight.toFixed(3)} gm  (${gross} − ${sw})` : '';
+    document.getElementById('net-tag').textContent = gross > 0 ? `Net weight = ${netWeight.toFixed(3)} gm  (${gross} − ${sw})` : '';
     calc();
   }
 
