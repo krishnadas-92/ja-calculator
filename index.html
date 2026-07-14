@@ -88,7 +88,22 @@
   </style>
 </head>
 <body>
-<div class="container">
+<div id="lock-screen" style="position:fixed;inset:0;background:#0f0f0f;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px;">
+  <div style="text-align:center;">
+    <div style="font-family:'Fraunces',serif;font-size:22px;color:#c9a84c;letter-spacing:0.1em;margin-bottom:6px;">JOS ✿ ALUKKAS</div>
+    <div style="font-size:11px;color:rgba(240,240,240,0.3);letter-spacing:0.2em;text-transform:uppercase;">Price Calculator</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:260px;">
+    <input type="password" id="lock-input" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code"
+           style="background:#222;border:0.5px solid rgba(255,255,255,0.14);border-radius:10px;padding:14px;color:#f0f0f0;font-size:16px;text-align:center;letter-spacing:0.3em;outline:none;font-family:'Inter',sans-serif;"
+           onkeydown="if(event.key==='Enter')checkLock()">
+    <button onclick="checkLock()"
+            style="background:rgba(201,168,76,0.15);border:0.5px solid rgba(201,168,76,0.3);border-radius:10px;padding:13px;color:#c9a84c;font-size:14px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;">Unlock</button>
+    <div id="lock-error" style="font-size:12px;color:#e05555;text-align:center;min-height:16px;"></div>
+  </div>
+</div>
+
+<div class="container" id="main-content" style="display:none;">
 
   <div class="header">
     <div class="logo" style="display:flex;align-items:center;justify-content:center;gap:6px;">
@@ -198,6 +213,26 @@
 </div>
 
 <script>
+  const ACCESS_CODE = "916916";
+  function checkLock() {
+    const val = document.getElementById('lock-input').value;
+    if (val === ACCESS_CODE) {
+      sessionStorage.setItem('ja_unlocked', '1');
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+    } else {
+      document.getElementById('lock-error').textContent = 'Incorrect code';
+      document.getElementById('lock-input').value = '';
+    }
+  }
+  // Skip lock if already unlocked this session
+  if (sessionStorage.getItem('ja_unlocked') === '1') {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  } else {
+    document.getElementById('lock-input').focus();
+  }
+
   const FEED_URL = "https://docs.google.com/spreadsheets/d/1k9SR-mcY5R2B9MgKkNoAbKajYGrL3kcuZvsly-TSI2M/gviz/tq?sheet=Rates&headers=0";
   let gold22k = null;
   let selectedKT = '22KT';
