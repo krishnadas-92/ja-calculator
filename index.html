@@ -307,7 +307,7 @@
     const stone = document.getElementById('r-stone').textContent;
     const gst = document.getElementById('r-gst').textContent;
     const total = document.getElementById('r-total').textContent;
-    const txt = `Gold Value: ${gold}\nValue Added (making ${mc}%): ${mcVal}\nStone Charge: ${stone}\nGST @ 3% (inclusive): ${gst}\nSelling Price: ${total}`;
+    const txt = `Making Charge ${mc}%\n\nGold Value: ${gold}\nValue Added: ${mcVal}\nStone Charge: ${stone}\nGST @ 3% (inclusive): ${gst}\n\nSelling Price: ${total}`;
     navigator.clipboard.writeText(txt).then(() => {
       const btn = document.querySelector('.copy-btn');
       btn.textContent = '✓ Copied!';
