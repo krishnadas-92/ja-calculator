@@ -10,23 +10,14 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0f0f0f;
-      --surface: #1a1a1a;
-      --surface2: #222222;
-      --border: rgba(255,255,255,0.08);
-      --border2: rgba(255,255,255,0.14);
-      --gold: #c9a84c;
-      --gold-soft: rgba(201,168,76,0.15);
-      --gold-border: rgba(201,168,76,0.3);
-      --text: #f0f0f0;
-      --text-muted: rgba(240,240,240,0.5);
-      --text-dim: rgba(240,240,240,0.3);
-      --green: #4caf7d;
-      --red: #e05555;
+      --bg: #0f0f0f; --surface: #1a1a1a; --surface2: #222222;
+      --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+      --gold: #c9a84c; --gold-soft: rgba(201,168,76,0.15); --gold-border: rgba(201,168,76,0.3);
+      --text: #f0f0f0; --text-muted: rgba(240,240,240,0.5); --text-dim: rgba(240,240,240,0.3);
+      --green: #4caf7d; --red: #e05555;
     }
     body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; min-height: 100vh; padding: 20px 16px 40px; }
     .container { max-width: 960px; margin: 0 auto; }
-
     .header { text-align: center; margin-bottom: 16px; }
     .logo-sub { font-size: 11px; color: var(--text-dim); letter-spacing: 0.22em; text-transform: uppercase; margin-top: 4px; }
     .rate-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 0.5px solid var(--border2); border-radius: 100px; padding: 5px 12px; font-size: 12px; color: var(--text-muted); margin-top: 8px; }
@@ -34,7 +25,6 @@
     .rate-dot.loading { background: #888; animation: pulse 1.2s infinite; }
     .rate-dot.error { background: var(--red); }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
     @keyframes ornamentShine {
       0%, 65%, 100% { filter: brightness(1) drop-shadow(0 0 0px #c9a84c); }
       75% { filter: brightness(2.5) drop-shadow(0 0 12px #c9a84c) drop-shadow(0 0 20px #c9a84c); }
@@ -42,14 +32,12 @@
       90% { filter: brightness(1) drop-shadow(0 0 0px #c9a84c); }
     }
     .ornament-img { animation: ornamentShine 8s ease-in-out infinite; }
-
     .rates-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px; }
     .purity-btn { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 10px; padding: 10px 8px; cursor: pointer; text-align: center; transition: all 0.15s; color: var(--text-muted); }
     .purity-btn:hover { border-color: var(--gold-border); color: var(--text); }
     .purity-btn.active { background: var(--gold-soft); border-color: var(--gold); color: var(--gold); }
     .purity-btn .kt { font-size: 14px; font-weight: 600; }
     .purity-btn .rate-val { font-size: 11px; margin-top: 2px; opacity: 0.7; }
-
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
     .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
     .card:last-child { margin-bottom: 0; }
@@ -61,8 +49,8 @@
     .field input { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 8px; padding: 10px 12px; color: var(--text); font-size: 14px; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.15s; width: 100%; }
     .field input:focus { border-color: var(--gold-border); }
     .field input::placeholder { color: var(--text-dim); }
+    .field input:disabled { opacity: 0.4; cursor: not-allowed; }
     .net-tag { font-size: 11px; color: var(--gold); min-height: 16px; margin: -4px 0 8px; }
-
     .result-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 18px; }
     .result-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 0.5px solid var(--border); font-size: 14px; }
     .result-row:last-of-type { border-bottom: none; }
@@ -73,18 +61,13 @@
     .selling-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
     .selling-val { font-family: 'Fraunces', serif; font-size: 28px; color: var(--gold); }
     .empty-state { padding: 32px 0; text-align: center; color: var(--text-dim); font-size: 13px; line-height: 1.8; }
-
     .copy-btn { width: 100%; padding: 12px; background: var(--gold-soft); border: 0.5px solid var(--gold-border); border-radius: 10px; color: var(--gold); font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s; }
     .copy-btn:hover { background: rgba(201,168,76,0.22); }
     .copy-btn svg { width: 15px; height: 15px; }
     .reset-btn { width: 100%; padding: 10px; background: transparent; border: 0.5px solid var(--border2); border-radius: 10px; color: var(--text-muted); font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; margin-top: 8px; transition: all 0.15s; }
     .reset-btn:hover { color: var(--text); background: var(--surface2); }
     .footer { text-align: center; font-size: 11px; color: var(--text-dim); margin-top: 20px; }
-
-    @media (max-width: 600px) {
-      .two-col { grid-template-columns: 1fr; }
-      .rates-bar { grid-template-columns: repeat(2,1fr); }
-    }
+    @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } .rates-bar { grid-template-columns: repeat(2,1fr); } }
   </style>
 </head>
 <body>
@@ -97,14 +80,12 @@
     <input type="password" id="lock-input" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code"
            style="background:#222;border:0.5px solid rgba(255,255,255,0.14);border-radius:10px;padding:14px;color:#f0f0f0;font-size:16px;text-align:center;letter-spacing:0.3em;outline:none;font-family:'Inter',sans-serif;"
            onkeydown="if(event.key==='Enter')checkLock()">
-    <button onclick="checkLock()"
-            style="background:rgba(201,168,76,0.15);border:0.5px solid rgba(201,168,76,0.3);border-radius:10px;padding:13px;color:#c9a84c;font-size:14px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;">Unlock</button>
+    <button onclick="checkLock()" style="background:rgba(201,168,76,0.15);border:0.5px solid rgba(201,168,76,0.3);border-radius:10px;padding:13px;color:#c9a84c;font-size:14px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;">Unlock</button>
     <div id="lock-error" style="font-size:12px;color:#e05555;text-align:center;min-height:16px;"></div>
   </div>
 </div>
 
 <div class="container" id="main-content" style="display:none;">
-
   <div class="header">
     <div class="logo" style="display:flex;align-items:center;justify-content:center;gap:6px;">
       <img src="https://raw.githubusercontent.com/krishnadas-92/ja-calculator/main/jos.png" alt="JOS" style="height:40px;width:auto;">
@@ -124,7 +105,7 @@
     <button class="purity-btn" onclick="setPurity(this,'24KT')">
       <div class="kt">24 KT</div><div class="rate-val" id="r24">—</div>
     </button>
-    <button class="purity-btn active" onclick="setPurity(this,'22KT')">
+    <button class="purity-btn" onclick="setPurity(this,'22KT')">
       <div class="kt">22 KT</div><div class="rate-val" id="r22">—</div>
     </button>
     <button class="purity-btn" onclick="setPurity(this,'18KT')">
@@ -155,7 +136,7 @@
         <div class="field-row">
           <div class="field">
             <label>Gross weight (gm)</label>
-            <input type="number" id="gross" placeholder="14.170" step="0.001" min="0" oninput="calcNet()">
+            <input type="number" id="gross" placeholder="14.170" step="0.001" min="0" oninput="onGrossInput()">
           </div>
           <div class="field">
             <label>Making charge (%)</label>
@@ -165,8 +146,8 @@
         <div class="net-tag" id="net-tag"></div>
         <div class="field-row single">
           <div class="field">
-            <label>Gold rate (₹/gm) — auto from purity above</label>
-            <input type="number" id="rate" placeholder="13090" step="1" min="0" oninput="calc()">
+            <label id="rate-label">Gold rate (₹/gm) — select a karat above</label>
+            <input type="number" id="rate" placeholder="Select karat first" step="1" min="0" oninput="calc()" disabled>
           </div>
         </div>
       </div>
@@ -175,32 +156,15 @@
     <div>
       <div class="result-card">
         <div class="section-label">Breakdown</div>
-        <div id="empty-state" class="empty-state">Enter item details<br>to see the breakdown</div>
+        <div id="empty-state" class="empty-state">Select a karat &amp; enter item details<br>to see the breakdown</div>
         <div id="breakdown" style="display:none">
-          <div class="result-row">
-            <span class="rlabel">Gold value</span>
-            <span class="rval" id="r-gold">—</span>
-          </div>
-          <div class="result-row">
-            <span class="rlabel" id="r-mc-label">Value added (making)</span>
-            <span class="rval" id="r-mc">—</span>
-          </div>
-          <div class="result-row">
-            <span class="rlabel">Stone charge</span>
-            <span class="rval" id="r-stone">—</span>
-          </div>
-          <div class="result-row gst-row">
-            <span class="rlabel">GST @ 3% (inclusive)</span>
-            <span class="rval" id="r-gst">—</span>
-          </div>
-          <div class="selling-row">
-            <span class="selling-label" id="selling-label">Selling price</span>
-            <span class="selling-val" id="r-total">—</span>
-          </div>
+          <div class="result-row"><span class="rlabel">Gold value</span><span class="rval" id="r-gold">—</span></div>
+          <div class="result-row"><span class="rlabel" id="r-mc-label">Value added (making)</span><span class="rval" id="r-mc">—</span></div>
+          <div class="result-row"><span class="rlabel">Stone charge</span><span class="rval" id="r-stone">—</span></div>
+          <div class="result-row gst-row"><span class="rlabel">GST @ 3% (inclusive)</span><span class="rval" id="r-gst">—</span></div>
+          <div class="selling-row"><span class="selling-label" id="selling-label">Selling price</span><span class="selling-val" id="r-total">—</span></div>
           <button class="copy-btn" onclick="copyText()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             Copy
           </button>
           <button class="reset-btn" onclick="resetForm()">Clear & start over</button>
@@ -225,7 +189,6 @@
       document.getElementById('lock-input').value = '';
     }
   }
-  // Skip lock if already unlocked this session
   if (sessionStorage.getItem('ja_unlocked') === '1') {
     document.getElementById('lock-screen').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
@@ -235,8 +198,23 @@
 
   const FEED_URL = "https://docs.google.com/spreadsheets/d/1k9SR-mcY5R2B9MgKkNoAbKajYGrL3kcuZvsly-TSI2M/gviz/tq?sheet=Rates&headers=0";
   let gold22k = null;
-  let selectedKT = '22KT';
+  let selectedKT = null;
   let netWeight = 0;
+  let calcCompleted = false;
+
+  // A finished calculation followed by a gross-weight change = new item.
+  // Clear the karat so the category must be chosen again.
+  function onGrossInput() {
+    if (calcCompleted) {
+      calcCompleted = false;
+      selectedKT = null;
+      document.querySelectorAll('.purity-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('rate').value = '';
+      document.getElementById('rate').disabled = true;
+      document.getElementById('rate-label').textContent = 'Gold rate (₹/gm) — select a karat above';
+    }
+    calcNet();
+  }
 
   function loadRates() {
     const cb = '__rates_cb_' + Date.now();
@@ -273,9 +251,9 @@
     document.getElementById('r24').textContent = g24 ? '₹' + g24.toLocaleString('en-IN') : '—';
     document.getElementById('r18').textContent = g18 ? '₹' + g18.toLocaleString('en-IN') : '—';
     document.getElementById('r14').textContent = g14 ? '₹' + g14.toLocaleString('en-IN') : '—';
-    setRateFromPurity();
     document.getElementById('dot').className = 'rate-dot';
     document.getElementById('rate-status').textContent = g22 ? '₹' + g22.toLocaleString('en-IN') + ' · 22KT live' : 'Rates loaded';
+    if (selectedKT) setRateFromPurity();
   }
 
   function setRateError() {
@@ -297,6 +275,8 @@
     document.querySelectorAll('.purity-btn').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
     selectedKT = kt;
+    document.getElementById('rate').disabled = false;
+    document.getElementById('rate-label').textContent = 'Gold rate (₹/gm) — auto from purity above';
     setRateFromPurity();
   }
 
@@ -314,7 +294,8 @@
     const rate = parseFloat(document.getElementById('rate').value) || 0;
     const mc = parseFloat(document.getElementById('mc').value) || 0;
     const stone = parseFloat(document.getElementById('stoneval').value) || 0;
-    if(!netWeight || !rate) {
+    if(!selectedKT || !netWeight || !rate) {
+      calcCompleted = false;
       document.getElementById('breakdown').style.display = 'none';
       document.getElementById('empty-state').style.display = 'block';
       return;
@@ -333,6 +314,7 @@
     document.getElementById('r-total').textContent = fmt(selling);
     document.getElementById('breakdown').style.display = 'block';
     document.getElementById('empty-state').style.display = 'none';
+    calcCompleted = true;
   }
 
   function copyText() {
@@ -357,8 +339,14 @@
     document.getElementById('mc').value = '';
     document.getElementById('stoneweight').value = '0';
     document.getElementById('stoneval').value = '0';
+    document.getElementById('rate').value = '';
+    document.getElementById('rate').disabled = true;
+    document.getElementById('rate-label').textContent = 'Gold rate (₹/gm) — select a karat above';
     document.getElementById('net-tag').textContent = '';
+    document.querySelectorAll('.purity-btn').forEach(b => b.classList.remove('active'));
+    selectedKT = null;
     netWeight = 0;
+    calcCompleted = false;
     document.getElementById('breakdown').style.display = 'none';
     document.getElementById('empty-state').style.display = 'block';
   }
