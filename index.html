@@ -32,12 +32,20 @@
       90% { filter: brightness(1) drop-shadow(0 0 0px #c9a84c); }
     }
     .ornament-img { animation: ornamentShine 8s ease-in-out infinite; }
+
+    .markup-bar { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 12px 0 16px; font-size: 12px; color: var(--text-muted); }
+    .markup-bar .chip { background: var(--surface); border: 0.5px solid var(--border2); border-radius: 8px; padding: 6px 10px; }
+    .markup-bar .chip b { color: var(--text); font-weight: 600; }
+    .markup-bar input { width: 70px; background: var(--surface2); border: 0.5px solid var(--gold-border); border-radius: 8px; padding: 6px 8px; color: var(--gold); font-size: 13px; font-family: 'Inter', sans-serif; outline: none; text-align: center; }
+    .markup-bar .eq { color: var(--gold); font-weight: 600; }
+
     .rates-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px; }
     .purity-btn { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 10px; padding: 10px 8px; cursor: pointer; text-align: center; transition: all 0.15s; color: var(--text-muted); }
     .purity-btn:hover { border-color: var(--gold-border); color: var(--text); }
     .purity-btn.active { background: var(--gold-soft); border-color: var(--gold); color: var(--gold); }
     .purity-btn .kt { font-size: 14px; font-weight: 600; }
     .purity-btn .rate-val { font-size: 11px; margin-top: 2px; opacity: 0.7; }
+
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
     .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
     .card:last-child { margin-bottom: 0; }
@@ -99,6 +107,14 @@
         <span id="rate-status">Fetching rates...</span>
       </div>
     </div>
+  </div>
+
+  <div class="markup-bar">
+    <span class="chip">AKGSMA 22K <b id="raw22">—</b></span>
+    <span>+ markup ₹</span>
+    <input type="number" id="markup" value="90" step="1" min="0" oninput="onMarkupChange()">
+    <span class="eq">=</span>
+    <span class="chip">22K <b id="adj22">—</b></span>
   </div>
 
   <div class="rates-bar">
@@ -197,23 +213,36 @@
   }
 
   const FEED_URL = "https://docs.google.com/spreadsheets/d/1k9SR-mcY5R2B9MgKkNoAbKajYGrL3kcuZvsly-TSI2M/gviz/tq?sheet=Rates&headers=0";
-  let gold22k = null;
+
+  // Fineness figures (matching AKGSMA hallmark purity)
+  const F22 = 0.916;      // 22K916 fineness — used to reach pure-gold base for 18K/14K
+  const DIV24 = 0.91634;  // divisor that matches the website's 24K figure
+  const P18 = 0.750;      // 18K750
+  const P14 = 0.585;      // 14K585
+
+  let rawGold22k = null;   // straight from AKGSMA sheet
   let selectedKT = null;
   let netWeight = 0;
   let calcCompleted = false;
 
-  // A finished calculation followed by a gross-weight change = new item.
-  // Clear the karat so the category must be chosen again.
-  function onGrossInput() {
-    if (calcCompleted) {
-      calcCompleted = false;
-      selectedKT = null;
-      document.querySelectorAll('.purity-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('rate').value = '';
-      document.getElementById('rate').disabled = true;
-      document.getElementById('rate-label').textContent = 'Gold rate (₹/gm) — select a karat above';
-    }
-    calcNet();
+  // restore saved markup (persists on the deployed site)
+  try { const m = localStorage.getItem('ja_markup'); if (m !== null) document.getElementById('markup').value = m; } catch(e) {}
+
+  function getMarkup() { return parseFloat(document.getElementById('markup').value) || 0; }
+  function adjusted22k() { return rawGold22k != null ? rawGold22k + getMarkup() : null; }
+
+  // Derive every karat from the marked-up 22K using the fineness method
+  function deriveRates() {
+    const a22 = adjusted22k();
+    if (a22 == null) return { a22: null, g24: null, g22: null, g18: null, g14: null };
+    const pure = a22 / F22; // pure-gold (100%) equivalent
+    return {
+      a22: a22,
+      g24: Math.round(a22 / DIV24),
+      g22: Math.round(a22),
+      g18: Math.round(pure * P18),
+      g14: Math.round(pure * P14)
+    };
   }
 
   function loadRates() {
@@ -231,28 +260,21 @@
     const map = {};
     json.table.rows.forEach(r => { const k = r.c[0] && r.c[0].v; if(k!=null) map[k] = r.c[1] || {}; });
     const g22 = toNum(map.Gold22K);
-    if(g22 != null) gold22k = g22;
+    if(g22 != null) rawGold22k = g22;
     updateRateDisplay();
   }
 
-  function deriveRates() {
-    const g22 = gold22k;
-    return {
-      g22: g22,
-      g24: g22 ? Math.round(g22 / 22 * 24) : null,
-      g18: g22 ? Math.round(g22 / 22 * 18) : null,
-      g14: g22 ? Math.round(g22 / 22 * 14) : null
-    };
-  }
-
   function updateRateDisplay() {
-    const { g22, g24, g18, g14 } = deriveRates();
-    document.getElementById('r22').textContent = g22 ? '₹' + g22.toLocaleString('en-IN') : '—';
-    document.getElementById('r24').textContent = g24 ? '₹' + g24.toLocaleString('en-IN') : '—';
-    document.getElementById('r18').textContent = g18 ? '₹' + g18.toLocaleString('en-IN') : '—';
-    document.getElementById('r14').textContent = g14 ? '₹' + g14.toLocaleString('en-IN') : '—';
+    const { a22, g24, g22, g18, g14 } = deriveRates();
+    const inr = n => '₹' + n.toLocaleString('en-IN');
+    document.getElementById('raw22').textContent = rawGold22k != null ? inr(rawGold22k) : '—';
+    document.getElementById('adj22').textContent = a22 != null ? inr(a22) : '—';
+    document.getElementById('r22').textContent = g22 != null ? inr(g22) : '—';
+    document.getElementById('r24').textContent = g24 != null ? inr(g24) : '—';
+    document.getElementById('r18').textContent = g18 != null ? inr(g18) : '—';
+    document.getElementById('r14').textContent = g14 != null ? inr(g14) : '—';
     document.getElementById('dot').className = 'rate-dot';
-    document.getElementById('rate-status').textContent = g22 ? '₹' + g22.toLocaleString('en-IN') + ' · 22KT live' : 'Rates loaded';
+    document.getElementById('rate-status').textContent = a22 != null ? inr(a22) + ' · 22KT' : 'Rates loaded';
     if (selectedKT) setRateFromPurity();
   }
 
@@ -261,13 +283,18 @@
     document.getElementById('rate-status').textContent = 'Rate fetch failed';
   }
 
+  function onMarkupChange() {
+    try { localStorage.setItem('ja_markup', document.getElementById('markup').value); } catch(e) {}
+    updateRateDisplay();
+  }
+
   function setRateFromPurity() {
-    const { g22, g24, g18, g14 } = deriveRates();
+    const { g24, g22, g18, g14 } = deriveRates();
     const ri = document.getElementById('rate');
-    if(selectedKT === '22KT' && g22) ri.value = g22;
-    else if(selectedKT === '24KT' && g24) ri.value = g24;
-    else if(selectedKT === '18KT' && g18) ri.value = g18;
-    else if(selectedKT === '14KT' && g14) ri.value = g14;
+    if(selectedKT === '22KT' && g22 != null) ri.value = g22;
+    else if(selectedKT === '24KT' && g24 != null) ri.value = g24;
+    else if(selectedKT === '18KT' && g18 != null) ri.value = g18;
+    else if(selectedKT === '14KT' && g14 != null) ri.value = g14;
     calc();
   }
 
@@ -281,6 +308,19 @@
   }
 
   function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+
+  // A finished calculation followed by a gross-weight change = new item.
+  function onGrossInput() {
+    if (calcCompleted) {
+      calcCompleted = false;
+      selectedKT = null;
+      document.querySelectorAll('.purity-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('rate').value = '';
+      document.getElementById('rate').disabled = true;
+      document.getElementById('rate-label').textContent = 'Gold rate (₹/gm) — select a karat above';
+    }
+    calcNet();
+  }
 
   function calcNet() {
     const gross = parseFloat(document.getElementById('gross').value) || 0;
