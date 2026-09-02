@@ -274,8 +274,21 @@
     document.getElementById('r18').textContent = g18 != null ? inr(g18) : '—';
     document.getElementById('r14').textContent = g14 != null ? inr(g14) : '—';
     document.getElementById('dot').className = 'rate-dot';
-    document.getElementById('rate-status').textContent = a22 != null ? inr(a22) + ' · 22KT' : 'Rates loaded';
+    updatePill();
     if (selectedKT) setRateFromPurity();
+  }
+
+  // Pill shows the selected karat's rate; falls back to 22K base when nothing is chosen
+  function updatePill() {
+    const { a22, g24, g22, g18, g14 } = deriveRates();
+    const inr = n => '₹' + n.toLocaleString('en-IN');
+    const status = document.getElementById('rate-status');
+    if (a22 == null) { status.textContent = 'Rates loaded'; return; }
+    if (selectedKT === '24KT') status.textContent = inr(g24) + ' · 24KT';
+    else if (selectedKT === '18KT') status.textContent = inr(g18) + ' · 18KT';
+    else if (selectedKT === '14KT') status.textContent = inr(g14) + ' · 14KT';
+    else if (selectedKT === '22KT') status.textContent = inr(g22) + ' · 22KT';
+    else status.textContent = inr(a22) + ' · 22KT base';
   }
 
   function setRateError() {
@@ -305,6 +318,7 @@
     document.getElementById('rate').disabled = false;
     document.getElementById('rate-label').textContent = 'Gold rate (₹/gm) — auto from purity above';
     setRateFromPurity();
+    updatePill();
   }
 
   function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
@@ -318,6 +332,7 @@
       document.getElementById('rate').value = '';
       document.getElementById('rate').disabled = true;
       document.getElementById('rate-label').textContent = 'Gold rate (₹/gm) — select a karat above';
+      updatePill();
     }
     calcNet();
   }
@@ -387,6 +402,7 @@
     selectedKT = null;
     netWeight = 0;
     calcCompleted = false;
+    updatePill();
     document.getElementById('breakdown').style.display = 'none';
     document.getElementById('empty-state').style.display = 'block';
   }
