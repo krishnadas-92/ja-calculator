@@ -214,11 +214,11 @@
 
   const FEED_URL = "https://docs.google.com/spreadsheets/d/1k9SR-mcY5R2B9MgKkNoAbKajYGrL3kcuZvsly-TSI2M/gviz/tq?sheet=Rates&headers=0";
 
-  // Fineness figures (matching AKGSMA hallmark purity)
-  const F22 = 0.916;      // 22K916 fineness — used to reach pure-gold base for 18K/14K
-  const DIV24 = 0.91634;  // divisor that matches the website's 24K figure
-  const P18 = 0.750;      // 18K750
-  const P14 = 0.585;      // 14K585
+  // Karat derivation, matched to the official website:
+  //   24K = 22K / 0.91634   (divisor method)
+  //   18K = 22K / 22 x 18   (carat ratio)
+  //   14K = 22K / 22 x 14   (carat ratio)
+  const DIV24 = 0.91634;
 
   let rawGold22k = null;   // straight from AKGSMA sheet
   let selectedKT = null;
@@ -231,17 +231,16 @@
   function getMarkup() { return parseFloat(document.getElementById('markup').value) || 0; }
   function adjusted22k() { return rawGold22k != null ? rawGold22k + getMarkup() : null; }
 
-  // Derive every karat from the marked-up 22K using the fineness method
+  // Derive every karat from the marked-up 22K
   function deriveRates() {
     const a22 = adjusted22k();
     if (a22 == null) return { a22: null, g24: null, g22: null, g18: null, g14: null };
-    const pure = a22 / F22; // pure-gold (100%) equivalent
     return {
       a22: a22,
       g24: Math.round(a22 / DIV24),
       g22: Math.round(a22),
-      g18: Math.round(pure * P18),
-      g14: Math.round(pure * P14)
+      g18: Math.round(a22 / 22 * 18),
+      g14: Math.round(a22 / 22 * 14)
     };
   }
 
