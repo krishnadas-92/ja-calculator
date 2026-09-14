@@ -378,7 +378,15 @@
     const stone = document.getElementById('r-stone').textContent;
     const gst = document.getElementById('r-gst').textContent;
     const total = document.getElementById('r-total').textContent;
-    const txt = `Making Charge ${mc}%\n\nGold Value: ${gold}\nValue Added: ${mcVal}\nStone Charge: ${stone}\nGST @ 3% (inclusive): ${gst}\n\n*Selling Price: ${total}*`;
+    const rate = parseFloat(document.getElementById('rate').value) || 0;
+
+    // Today's date like "2 September 2026"
+    const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    // Net weight and per-gram rate for the gold value line
+    const wt = netWeight ? netWeight.toFixed(3) : '0';
+    const rateStr = '₹' + rate.toLocaleString('en-IN');
+
+    const txt = `Rate as of ${dateStr}\n\nMaking Charge ${mc}%\n\nGold Value (${wt} gm @ ${rateStr}/gm): ${gold}\nValue Added: ${mcVal}\nStone Charge: ${stone}\nGST @ 3% (inclusive): ${gst}\n\n*Total (incl. GST): ${total}*`;
     navigator.clipboard.writeText(txt).then(() => {
       const btn = document.querySelector('.copy-btn');
       btn.textContent = '✓ Copied!';
