@@ -32,20 +32,17 @@
       90% { filter: brightness(1) drop-shadow(0 0 0px #c9a84c); }
     }
     .ornament-img { animation: ornamentShine 8s ease-in-out infinite; }
-
     .markup-bar { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 12px 0 16px; font-size: 12px; color: var(--text-muted); }
     .markup-bar .chip { background: var(--surface); border: 0.5px solid var(--border2); border-radius: 8px; padding: 6px 10px; }
     .markup-bar .chip b { color: var(--text); font-weight: 600; }
     .markup-bar input { width: 70px; background: var(--surface2); border: 0.5px solid var(--gold-border); border-radius: 8px; padding: 6px 8px; color: var(--gold); font-size: 13px; font-family: 'Inter', sans-serif; outline: none; text-align: center; }
     .markup-bar .eq { color: var(--gold); font-weight: 600; }
-
     .rates-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px; }
     .purity-btn { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 10px; padding: 10px 8px; cursor: pointer; text-align: center; transition: all 0.15s; color: var(--text-muted); }
     .purity-btn:hover { border-color: var(--gold-border); color: var(--text); }
     .purity-btn.active { background: var(--gold-soft); border-color: var(--gold); color: var(--gold); }
     .purity-btn .kt { font-size: 14px; font-weight: 600; }
     .purity-btn .rate-val { font-size: 11px; margin-top: 2px; opacity: 0.7; }
-
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
     .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
     .card:last-child { margin-bottom: 0; }
@@ -112,7 +109,7 @@
   <div class="markup-bar">
     <span class="chip">AKGSMA 22K <b id="raw22">—</b></span>
     <span>+ markup ₹</span>
-    <input type="number" id="markup" value="90" step="1" min="0" oninput="onMarkupChange()">
+    <input type="number" id="markup" value="0" step="1" min="0" oninput="onMarkupChange()">
     <span class="eq">=</span>
     <span class="chip">22K <b id="adj22">—</b></span>
   </div>
@@ -178,7 +175,7 @@
           <div class="result-row"><span class="rlabel" id="r-mc-label">Value added (making)</span><span class="rval" id="r-mc">—</span></div>
           <div class="result-row"><span class="rlabel">Stone charge</span><span class="rval" id="r-stone">—</span></div>
           <div class="result-row gst-row"><span class="rlabel">GST @ 3% (inclusive)</span><span class="rval" id="r-gst">—</span></div>
-          <div class="selling-row"><span class="selling-label" id="selling-label">Selling price</span><span class="selling-val" id="r-total">—</span></div>
+          <div class="selling-row"><span class="selling-label" id="selling-label">Total (incl. GST)</span><span class="selling-val" id="r-total">—</span></div>
           <button class="copy-btn" onclick="copyText()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             Copy
@@ -220,18 +217,16 @@
   //   14K = 22K / 22 x 14   (carat ratio)
   const DIV24 = 0.91634;
 
-  let rawGold22k = null;   // straight from AKGSMA sheet
+  let rawGold22k = null;
   let selectedKT = null;
   let netWeight = 0;
   let calcCompleted = false;
 
-  // restore saved markup (persists on the deployed site)
   try { const m = localStorage.getItem('ja_markup'); if (m !== null) document.getElementById('markup').value = m; } catch(e) {}
 
   function getMarkup() { return parseFloat(document.getElementById('markup').value) || 0; }
   function adjusted22k() { return rawGold22k != null ? rawGold22k + getMarkup() : null; }
 
-  // Derive every karat from the marked-up 22K
   function deriveRates() {
     const a22 = adjusted22k();
     if (a22 == null) return { a22: null, g24: null, g22: null, g18: null, g14: null };
@@ -277,7 +272,6 @@
     if (selectedKT) setRateFromPurity();
   }
 
-  // Pill shows the selected karat's rate; falls back to 22K base when nothing is chosen
   function updatePill() {
     const { a22, g24, g22, g18, g14 } = deriveRates();
     const inr = n => '₹' + n.toLocaleString('en-IN');
@@ -322,7 +316,6 @@
 
   function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
 
-  // A finished calculation followed by a gross-weight change = new item.
   function onGrossInput() {
     if (calcCompleted) {
       calcCompleted = false;
@@ -361,7 +354,6 @@
     const gst = selling * 3 / 103;
     document.getElementById('r-gold').textContent = fmt(goldVal);
     document.getElementById('r-mc-label').textContent = `Value added (making ${mc}%)`;
-    document.getElementById('selling-label').textContent = `Selling price at ${mc}% MC`;
     document.getElementById('r-mc').textContent = fmt(mcVal);
     document.getElementById('r-stone').textContent = fmt(stone);
     document.getElementById('r-gst').textContent = fmt(gst);
@@ -372,6 +364,7 @@
   }
 
   function copyText() {
+    const gross = parseFloat(document.getElementById('gross').value) || 0;
     const gold = document.getElementById('r-gold').textContent;
     const mc = document.getElementById('mc').value || '0';
     const mcVal = document.getElementById('r-mc').textContent;
@@ -380,13 +373,12 @@
     const total = document.getElementById('r-total').textContent;
     const rate = parseFloat(document.getElementById('rate').value) || 0;
 
-    // Today's date like "2 September 2026"
     const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-    // Net weight and per-gram rate for the gold value line
+    const grossStr = gross.toFixed(3);
     const wt = netWeight ? netWeight.toFixed(3) : '0';
     const rateStr = '₹' + rate.toLocaleString('en-IN');
 
-    const txt = `Rate as of ${dateStr}\n\nMaking Charge ${mc}%\n\nGold Value (${wt} gm @ ${rateStr}/gm): ${gold}\nValue Added: ${mcVal}\nStone Charge: ${stone}\nGST @ 3% (inclusive): ${gst}\n\n*Total (incl. GST): ${total}*`;
+    const txt = `Rate as of ${dateStr}\n\nGross weight: ${grossStr} gm\nMaking Charge ${mc}%\n\nGold Value (${wt} gm @ ${rateStr}/gm): ${gold}\nValue Added: ${mcVal}\nStone Charge: ${stone}\nGST @ 3% (inclusive): ${gst}\n\n*Total (incl. GST): ${total}*`;
     navigator.clipboard.writeText(txt).then(() => {
       const btn = document.querySelector('.copy-btn');
       btn.textContent = '✓ Copied!';
