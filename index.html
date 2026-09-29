@@ -212,9 +212,9 @@
   const FEED_URL = "https://docs.google.com/spreadsheets/d/1k9SR-mcY5R2B9MgKkNoAbKajYGrL3kcuZvsly-TSI2M/gviz/tq?sheet=Rates&headers=0";
 
   // Karat derivation, matched to the official website:
-  //   24K = 22K / 0.91634            (divisor method)
-  //   18K = (22K / 22 x 18) + 1      (carat ratio, +1 restructure)
-  //   14K = 22K / 22 x 14            (carat ratio)
+  //   24K = 22K / 0.91634       (divisor method)
+  //   18K = 22K / 22 x 18       (plain carat ratio)
+  //   14K = 22K / 22 x 14       (plain carat ratio)
   const DIV24 = 0.91634;
 
   let rawGold22k = null;
@@ -234,7 +234,7 @@
       a22: a22,
       g24: Math.round(a22 / DIV24),
       g22: Math.round(a22),
-      g18: Math.round(a22 / 22 * 18) + 1,
+      g18: Math.round(a22 / 22 * 18),
       g14: Math.round(a22 / 22 * 14)
     };
   }
